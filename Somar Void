@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SomarVoid</title>
+    <link href="https://fonts.googleapis.com/css2?family=Butcherman&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Eater&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap" rel="stylesheet">
+    
+    <style>
+        /* TÍTULO PRINCIPAL */
+        h1 {
+            font-family: 'Nosifer', cursive;
+        }
+
+        /* TEXTO (parágrafo) */
+        p {
+            font-family: 'Butcherman', cursive;
+        }
+
+        /* MENU */
+        .menu a {
+            font-family: 'Eater', cursive;
+        }
+
+        body {
+            background-color: black;
+        }
+
+        .navbar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .menu {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .container h1 {
+            margin-bottom: 5px;
+            color: white;
+        }
+
+        .container p {
+            margin-top: 0;
+            font-size: 19px;
+            color: white;
+        }
+
+        .feed {
+            width: 80%;
+            margin: auto;
+        }
+
+        .post {
+            background: #0a0a0a;
+            border-left: 3px solid red;
+            padding: 15px;
+            margin: 20px 0;
+            color: white;
+        }
+
+        .post h2 {
+            margin-bottom: 5px;
+        }
+
+        .capa {
+            width: 300px;
+        }
+
+        .stories {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .story {
+            margin: 20px;
+            text-align: center;
+        }
+
+        .capa-story {
+            width: 180px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .link-story {
+            color: white;
+            text-decoration: none;
+        }
+
+        .link-story:hover {
+            color: red;
+        }
+
+        .redes {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .redes a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        .redes a:hover {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="menu">
+        <a href="#" onclick="mostrar('home')">Feed</a>
+        <a href="#" onclick="mostrar('games')">Games</a>
+        <a href="#" onclick="mostrar('stories')">Stories</a>
+        <a href="#" onclick="mostrar('suporte')">Suporte</a>
+    </div>
+
+    <!-- HOME -->
+    <div class="container" id="home">
+        <h1>Bem-vinda ao Somar Void</h1>
+        <p>Nem tudo que entra no vazio… sai igual.</p>
+
+        <div class="feed">
+            <!-- POST 1 -->
+            <div class="post">
+                <h2>Dia 01</h2>
+                <p>Eu achei o site.</p>
+            </div>
+
+            <!-- POST 2 -->
+            <div class="post">
+                <h2>Dia 02</h2>
+                <p>Algo me respondeu.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAMES -->
+    <div class="container" id="games" style="display:none;">
+        <h1>URSO AMALDIÇOADO</h1>
+        <p>Ele estava lá… antes mesmo de você chegar.</p>
+        <img src="capa game.jpg" class="capa">
+
+        <a href="LINK_DO_SEU_JOGO" target="_blank">
+            <button>JOGAR</button>
+        </a>
+    </div>
+
+    <!-- STORIES -->
+    <div class="container" id="stories" style="display:none;">
+        <h1>Stories</h1>
+
+        <div class="stories">
+            <!-- HISTÓRIA 1 -->
+            <div class="story">
+                <img src="capa em livro.jpg" class="capa-story">
+
+                <a href="#" class="link-story">
+                    <h2>O Urso Amaldiçoado</h2>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUPORTE -->
+    <div class="container" id="suporte" style="display:none;">
+        <p>Se algo no Void te afetou… ou se você precisa falar comigo, entre em contato.</p>
+
+        <div class="redes">
+            <a href="https://instagram.com/raposa_pirat4" target="_blank">
+                Instagram
+            </a>
+
+            <a href="https://tiktok.com/@raposa_pirat4" target="_blank">
+                TikTok
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function mostrar(secao) {
+            document.getElementById("home").style.display = "none";
+            document.getElementById("games").style.display = "none";
+            document.getElementById("stories").style.display = "none";
+            document.getElementById("suporte").style.display = "none";
+
+            document.getElementById(secao).style.display = "block";
+        }
+    </script>
+</body>
+</html>
