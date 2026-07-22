@@ -1,250 +1,1102 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <title>SomarVoid</title>
-    <link href="https://fonts.googleapis.com/css2?family=Butcherman&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Eater&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap" rel="stylesheet">
-
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOMAR | Central Criativa</title>
     
+    <!-- Fontes do Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- ==========================================================================
+       ESTILOS (CSS3)
+       ========================================================================== -->
     <style>
-        /* TÍTULO PRINCIPAL */
-        h1 {
-            font-family: 'Nosifer', cursive;
+        :root {
+            --bg-dark: #000000;
+            --bg-card: #0d0d0d;
+            --bg-card-hover: #141414;
+            --bg-modal: #111111;
+            --border-color: #222222;
+            --text-main: #f0f0f0;
+            --text-muted: #888888;
+            
+            /* Cores de Destaque */
+            --accent-red: #d32f2f;
+            --accent-red-hover: #f44336;
+            --accent-green: #2e7d32;
+            --accent-green-hover: #388e3c;
+            
+            --font-heading: 'Cinzel', serif;
+            --font-body: 'Inter', sans-serif;
+            --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* TEXTO (parágrafo) */
-        p {
-            font-family: 'Butcherman', cursive;
-        }
-
-        /* MENU */
-        .menu a {
-            font-family: 'Eater', cursive;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            background-color: black;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
         }
 
+        /* --- Navegação Header --- */
         .navbar {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            margin-top: 20px;
+            padding: 1.2rem 5%;
+            background-color: rgba(0, 0, 0, 0.9);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
         }
 
-        .menu {
+        .brand-logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            letter-spacing: 4px;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .brand-logo:hover {
+            color: var(--accent-red);
+            text-shadow: 0 0 10px rgba(211, 47, 47, 0.5);
+        }
+
+        .nav-links {
             display: flex;
-            gap: 25px;
+            list-style: none;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-btn.active {
+            border-bottom: 2px solid var(--accent-red);
+        }
+
+        /* --- Layout Principal --- */
+        .main-content {
+            flex: 1;
+            padding: 2.5rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Hero Section (Início) --- */
+        .hero-container {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .hero-title {
+            font-family: var(--font-heading);
+            font-size: 4rem;
+            letter-spacing: 8px;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-quote {
+            font-style: italic;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+            border-left: 3px solid var(--accent-red);
+            padding-left: 1rem;
+            text-align: left;
+        }
+
+        .hero-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .hero-card-btn {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            border-radius: 8px;
+            color: var(--text-main);
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            transition: var(--transition-smooth);
+        }
+
+        .hero-card-btn:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-red);
+            background-color: var(--bg-card-hover);
+            box-shadow: 0 8px 25px rgba(211, 47, 47, 0.15);
+        }
+
+        .btn-icon {
+            font-size: 2rem;
+        }
+
+        .btn-title {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .btn-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* --- Cabeçalhos de Seções --- */
+        .section-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+        }
+
+        /* --- Grid de Cartões & Cards --- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .story-card, .static-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .story-card:hover, .static-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .card-cover {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #1a1a1a;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-cover-placeholder {
+            width: 100%;
+            height: 180px;
+            display: flex;
+            align-items: center;
             justify-content: center;
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #111111 0%, #1f1f1f 100%);
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .menu a {
-            color: white;
-            text-decoration: none;
-            font-size: 24px;
-        }
-
-        .container {
+        .card-body {
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            flex: 1;
+        }
+
+        .card-body h3 {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .card-category {
+            display: inline-block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-red);
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card-admin-btns {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .btn-sm {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-edit {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .btn-edit:hover {
+            background-color: #555;
+        }
+
+        .btn-delete {
+            background-color: rgba(211, 47, 47, 0.2);
+            color: var(--accent-red-hover);
+            border: 1px solid var(--accent-red);
+        }
+
+        .btn-delete:hover {
+            background-color: var(--accent-red);
+            color: #fff;
+        }
+
+        /* --- Botões Gerais --- */
+        .btn-primary {
+            background-color: var(--accent-red);
+            color: #fff;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: var(--transition-smooth);
+            align-self: flex-start;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-red-hover);
+            box-shadow: 0 0 15px rgba(211, 47, 47, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-block;
             text-align: center;
-            margin-top: 20px;
+            transition: var(--transition-smooth);
         }
 
-        .container h1 {
-            margin-bottom: 5px;
-            color: white;
+        .btn-secondary:hover {
+            background-color: #222;
+            border-color: #444;
         }
 
-        .container p {
-            margin-top: 0;
-            font-size: 19px;
-            color: white;
-        }
-
-        .feed {
-            width: 80%;
-            margin: auto;
-        }
-
-        .post {
-            background: #0a0a0a;
-            border-left: 3px solid red;
-            padding: 15px;
-            margin: 20px 0;
-            color: white;
-        }
-
-        .post h2 {
-            margin-bottom: 5px;
-        }
-
-        .capa {
-            width: 300px;
-        }
-
-        .stories {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .story {
-            margin: 20px;
+        .btn-accent {
+            background-color: var(--accent-green);
+            color: #fff;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-block;
             text-align: center;
+            transition: var(--transition-smooth);
         }
 
-        .capa-story {
-            width: 180px;
-            border-radius: 10px;
-            margin-bottom: 10px;
+        .btn-accent:hover {
+            background-color: var(--accent-green-hover);
         }
 
-        .link-story {
-            color: white;
-            text-decoration: none;
+        .card-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1rem;
         }
 
-        .link-story:hover {
-            color: red;
-        }
-
-        .redes {
+        /* --- Sobre & Contato --- */
+        .about-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            border-radius: 8px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 1.2rem;
         }
 
-        .redes a {
-            color: white;
+        .about-tags {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .about-tags span {
+            background-color: #1a1a1a;
+            border: 1px solid var(--border-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .contact-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 8px;
             text-decoration: none;
-            font-size: 20px;
+            color: var(--text-main);
+            text-align: center;
+            transition: var(--transition-smooth);
         }
 
-        .redes a:hover {
-            color: red;
+        .contact-card:hover {
+            border-color: var(--accent-green);
+            transform: translateY(-5px);
         }
 
-        .container{
+        .social-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* --- Modais --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--bg-modal);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-large {
             max-width: 800px;
-            margin: auto;
         }
 
-    @media (max-width: 769px) {
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
 
-        .menu{
-            flex-direction:column;
-            gap: 10px;
+        .modal-close:hover {
+            color: var(--accent-red);
+        }
+
+        /* --- Formulário --- */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input, .form-group textarea {
+            background-color: #1a1a1a;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.8rem;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-red);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        /* --- Leitura da História no Modal --- */
+        .modal-read-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .modal-read-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-read-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .modal-read-cover {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-read-text {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #dddddd;
+            white-space: pre-wrap;
+        }
+
+        /* --- Footer --- */
+        .footer {
             text-align: center;
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: auto;
         }
 
-        .post{
-            font-size: 14px;
-            padding: 10px;
-        }
+        /* --- Responsividade --- */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
 
-        h1{
-            font-size: 22px;
-        }
+            .hero-title {
+                font-size: 2.8rem;
+            }
 
-        .capa-story{
-            width: 120px;
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
         }
-    }
     </style>
 </head>
-
 <body>
-    <div class="menu">
-        <a href="#" onclick="mostrar('home')">Feed</a>
-        <a href="#" onclick="mostrar('games')">Games</a>
-        <a href="#" onclick="mostrar('stories')">Stories</a>
-        <a href="#" onclick="mostrar('suporte')">Suporte</a>
-    </div>
 
-    <!-- HOME -->
-    <div class="container" id="home">
-        <h1>Bem-vinda ao Somar Void</h1>
-        <p>Nem tudo que entra no vazio… sai igual.</p>
-
-        <div class="feed">
-            <!-- POST 1 -->
-            <div class="post">
-                <h2>Dia 01</h2>
-                <p>Já viram um urso se comunicar? pois é, nem tudo que não tem vida realmente é mudo...</p>
-            </div>
-
-            <!-- POST 2 -->
-            <div class="post">
-                <h2>Dia 02</h2>
-                <p>Se você ouvir seu nome...não olhe!.</p>
-            </div>
-
-            <!-- POST 3 -->
-            <div class="post">
-                <h2>Dia 03</h2>
-                <p>O que será que acontece quando estamos dormindo? tipo, estamos de olhos fechados e tudo em silencio...o que será que rola na rua...ou do seu lado.</p>
-            </div>
+    <!-- Navegação Principal -->
+    <header class="navbar">
+        <div class="logo-container" onclick="showSection('home')">
+            <h1 class="brand-logo">SOMAR</h1>
         </div>
-    </div>
+        <nav>
+            <ul class="nav-links">
+                <li><button class="nav-btn active" onclick="showSection('home')">Início</button></li>
+                <li><button class="nav-btn" onclick="showSection('arquivos')">📚 Arquivos</button></li>
+                <li><button class="nav-btn" onclick="showSection('livros')">📖 Livros</button></li>
+                <li><button class="nav-btn" onclick="showSection('games')">🎮 Games</button></li>
+                <li><button class="nav-btn" onclick="showSection('sobre')">👤 Sobre</button></li>
+                <li><button class="nav-btn" onclick="showSection('contato')">📞 Contato</button></li>
+            </ul>
+        </nav>
+    </header>
 
-    <!-- GAMES -->
-    <div class="container" id="games" style="display:none;">
-        <h1>URSO AMALDIÇOADO</h1>
-        <p>Ele estava lá… antes mesmo de você chegar.</p>
-        <img src="capa game.jpg" class="capa">
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
 
-        <a href="LINK_DO_SEU_JOGO" target="_blank">
-            <button>JOGAR</button>
-        </a>
-    </div>
+        <!-- ===== SEÇÃO: INÍCIO ===== -->
+        <section id="home" class="content-section active">
+            <div class="hero-container">
+                <h1 class="hero-title">SOMAR</h1>
+                <blockquote class="hero-quote">
+                    "Cada história nasceu de um pensamento que se recusou a desaparecer."
+                </blockquote>
+                <div class="hero-nav-grid">
+                    <button class="hero-card-btn" onclick="showSection('arquivos')">
+                        <span class="btn-icon">📚</span>
+                        <span class="btn-title">Arquivos</span>
+                        <span class="btn-desc">Explore histórias e contos sombrios</span>
+                    </button>
+                    <button class="hero-card-btn" onclick="showSection('livros')">
+                        <span class="btn-icon">📖</span>
+                        <span class="btn-title">Livros</span>
+                        <span class="btn-desc">Obras completas e publicações</span>
+                    </button>
+                    <button class="hero-card-btn" onclick="showSection('games')">
+                        <span class="btn-icon">🎮</span>
+                        <span class="btn-title">Games</span>
+                        <span class="btn-desc">Projetos, jogos e mods</span>
+                    </button>
+                    <button class="hero-card-btn" onclick="showSection('sobre')">
+                        <span class="btn-icon">👤</span>
+                        <span class="btn-title">Sobre</span>
+                        <span class="btn-desc">Conheça o autor e objetivos</span>
+                    </button>
+                    <button class="hero-card-btn hero-card-wide" onclick="showSection('contato')">
+                        <span class="btn-icon">📞</span>
+                        <span class="btn-title">Contato</span>
+                        <span class="btn-desc">Redes sociais e comunidade</span>
+                    </button>
+                </div>
+            </div>
+        </section>
 
-    <!-- STORIES -->
-    <div class="container" id="stories" style="display:none;">
-        <h1>Stories</h1>
+        <!-- ===== SEÇÃO: ARQUIVOS (HISTÓRIAS) ===== -->
+        <section id="arquivos" class="content-section">
+            <div class="section-header">
+                <h2>📚 Arquivos</h2>
+                <p>Biblioteca de histórias, contos de terror e ficção científica.</p>
+                <button class="btn-primary" onclick="openStoryModal()">➕ Nova História</button>
+            </div>
+            
+            <div id="stories-grid" class="cards-grid">
+                <!-- Cards renderizados dinamicamente via JS -->
+            </div>
+        </section>
 
-        <div class="stories">
-            <!-- HISTÓRIA 1 -->
-            <div class="story">
-                <img src="capa em livro.jpg" class="capa-story">
+        <!-- ===== SEÇÃO: LIVROS ===== -->
+        <section id="livros" class="content-section">
+            <div class="section-header">
+                <h2>📖 Livros</h2>
+                <p>Obras e publicações oficiais em destaque.</p>
+            </div>
+            <div class="cards-grid">
+                <div class="static-card">
+                    <div class="card-cover-placeholder">📖</div>
+                    <div class="card-body">
+                        <h3>A Cidade Onde os Sonhos Esquecidos Crescem</h3>
+                        <p class="card-category">Fantasia Sombria</p>
+                        <p class="card-desc">Em meio às ruínas do inconsciente, memórias perdidas ganham forma física e cobram um preço alto daqueles que tentam resgatá-las.</p>
+                        <div class="card-actions">
+                            <a href="#" class="btn-secondary" target="_blank">Ler no Wattpad</a>
+                            <a href="#" class="btn-accent" target="_blank">Comprar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                <a href="#" class="link-story">
-                    <h2>O Urso Amaldiçoado</h2>
+        <!-- ===== SEÇÃO: GAMES ===== -->
+        <section id="games" class="content-section">
+            <div class="section-header">
+                <h2>🎮 Games & Mods</h2>
+                <p>Projetos interativos, modificações e universo de desenvolvimento.</p>
+            </div>
+            <div class="cards-grid">
+                <div class="static-card">
+                    <div class="card-cover-placeholder">👾</div>
+                    <div class="card-body">
+                        <h3>Projeto Nethercraft</h3>
+                        <p class="card-category">RPG de Sobrevivência / Mistério</p>
+                        <p class="card-desc">Um universo interativo que conecta terror atmosférico, sistemas complexos e uma narrativa profunda.</p>
+                        <div class="card-actions">
+                            <a href="#" target="_blank" class="btn-secondary">Comunidade Discord (Nethercraft)</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="static-card">
+                    <div class="card-cover-placeholder">🎬</div>
+                    <div class="card-body">
+                        <h3>Conteúdo & Devlog (TikTok/Instagram)</h3>
+                        <p class="card-category">Mídia & Vídeos</p>
+                        <p class="card-desc">Acompanhe os bastidores de desenvolvimento de games, artes e histórias em tempo real.</p>
+                        <div class="card-actions">
+                            <a href="https://tiktok.com/@raposa_pirat4" target="_blank" class="btn-accent">Ver no TikTok</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SEÇÃO: SOBRE ===== -->
+        <section id="sobre" class="content-section">
+            <div class="about-container">
+                <h2>👤 Sobre o Criador</h2>
+                <div class="about-card">
+                    <p>Bem-vindo ao <strong>SOMAR</strong>. Este site é a minha central criativa oficial: um repositório pessoal projetado para concentrar todas as minhas histórias, projetos de jogos, livros e ideias.</p>
+                    <p>Exploro universos focados em <strong>terror, mistério, ficção científica e fantasia sombria</strong>. Acredito na construção de ambientes imersivos onde cada narrativa desafia a imaginação e permanece viva na mente do leitor.</p>
+                    <div class="about-tags">
+                        <span>Ficção Sombria</span>
+                        <span>Game Dev</span>
+                        <span>Worldbuilding</span>
+                        <span>Narrativas</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SEÇÃO: CONTATO ===== -->
+        <section id="contato" class="content-section">
+            <div class="section-header">
+                <h2>📞 Contato & Redes</h2>
+                <p>Conecte-se e acompanhe o desenvolvimento de novos projetos.</p>
+            </div>
+            <div class="contact-grid">
+                <a href="https://instagram.com/raposa_pirat4" target="_blank" class="contact-card">
+                    <span class="social-icon">📷</span>
+                    <h3>Instagram</h3>
+                    <p>@raposa_pirat4</p>
+                </a>
+                <a href="https://tiktok.com/@raposa_pirat4" target="_blank" class="contact-card">
+                    <span class="social-icon">🎵</span>
+                    <h3>TikTok</h3>
+                    <p>@raposa_pirat4</p>
+                </a>
+                <a href="#" target="_blank" class="contact-card">
+                    <span class="social-icon">💬</span>
+                    <h3>Discord</h3>
+                    <p>Nethercraft</p>
+                </a>
+                <a href="https://github.com" target="_blank" class="contact-card">
+                    <span class="social-icon">💻</span>
+                    <h3>GitHub</h3>
+                    <p>Repositório dos Projetos</p>
                 </a>
             </div>
+        </section>
+
+    </main>
+
+    <!-- ===== MODAL DE LEITURA DA HISTÓRIA ===== -->
+    <div id="read-modal" class="modal-overlay">
+        <div class="modal-content modal-large">
+            <button class="modal-close" onclick="closeReadModal()">&times;</button>
+            <div id="read-modal-body">
+                <!-- Preenchido via JS -->
+            </div>
         </div>
     </div>
 
-    <!-- SUPORTE -->
-    <div class="container" id="suporte" style="display:none;">
-        <p>Se algo no Void te afetou… ou se você precisa falar comigo, entre em contato.</p>
+    <!-- ===== MODAL DE PUBLICAÇÃO / EDIÇÃO ===== -->
+    <div id="story-form-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeStoryModal()">&times;</button>
+            <h3 id="form-modal-title">➕ Publicar Nova História</h3>
+            <form id="story-form" onsubmit="handleStorySubmit(event)">
+                <input type="hidden" id="story-id">
+                
+                <div class="form-group">
+                    <label for="story-title">Título</label>
+                    <input type="text" id="story-title" placeholder="Ex: A Cidade Onde os Sonhos Esquecidos Crescem" required>
+                </div>
 
-        <div class="redes">
-            <a href="https://instagram.com/raposa_pirat4" target="_blank">
-                Instagram
-            </a>
+                <div class="form-group">
+                    <label for="story-category">Categoria</label>
+                    <input type="text" id="story-category" placeholder="Ex: Fantasia Sombria, Terror, Sci-Fi" required>
+                </div>
 
-            <a href="https://tiktok.com/@raposa_pirat4" target="_blank">
-                TikTok
-            </a>
+                <div class="form-group">
+                    <label for="story-cover">URL da Imagem de Capa (Opcional)</label>
+                    <input type="url" id="story-cover" placeholder="https://exemplo.com/imagem.jpg">
+                </div>
+
+                <div class="form-group">
+                    <label for="story-content">Texto da História</label>
+                    <textarea id="story-content" rows="8" placeholder="Escreva sua história aqui..." required></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeStoryModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary" id="form-submit-btn">Publicar</button>
+                </div>
+            </form>
         </div>
     </div>
 
+    <footer class="footer">
+        <p>&copy; 2026 <strong>SOMAR</strong>. Todos os direitos reservados. Design Sombrio & Elegante.</p>
+    </footer>
+    <!-- ==========================================================================
+       LÓGICA JAVASCRIPT (VANILLA JS)
+       ========================================================================== -->
     <script>
-        function mostrar(secao) {
-            document.getElementById("home").style.display = "none";
-            document.getElementById("games").style.display = "none";
-            document.getElementById("stories").style.display = "none";
-            document.getElementById("suporte").style.display = "none";
+        // --- Estado da Aplicação e Dados Iniciais ---
+        const STORAGE_KEY = 'somar_historias_db';
 
-            document.getElementById(secao).style.display = "block";
+        // História de Exemplo Inicial (caso o LocalStorage esteja vazio)
+        const defaultStories = [
+            {
+                id: '1',
+                title: 'A Cidade Onde os Sonhos Esquecidos Crescem',
+                category: 'Fantasia Sombria',
+                cover: '',
+                content: `Em meio às ruínas do inconsciente, memórias perdidas ganham forma física e cobram um preço alto daqueles que tentam resgatá-las.\n\nCaminhar pelas ruas retorcidas da cidade sem nome era como respirar poeira e velhas promessas. Cada esquina revelava um fragmento do que alguém já abandonou: um brinquedo quebrado, uma carta nunca enviada, uma ambição deixada de lado pelo medo.\n\nEles dizem que os sonhos aqui não morrem. Eles apenas crescem raízes, tornando-se criaturas que espreitam no escuro, esperando por qualquer um que venha procurá-los.`,
+                date: '21/07/2026'
+            }
+        ];
+
+        // --- Inicialização ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initDatabase();
+            renderStories();
+        });
+
+        // Inicializa o LocalStorage se for a primeira visita
+        function initDatabase() {
+            if (!localStorage.getItem(STORAGE_KEY)) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultStories));
+            }
         }
+
+        // Obtém as histórias salvas
+        function getStories() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        }
+
+        // Salva o array de histórias no LocalStorage
+        function saveStories(stories) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(stories));
+        }
+
+        // --- Navegação entre Seções SPA (Single Page Application) ---
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            const buttons = document.querySelectorAll('.nav-btn');
+
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // Atualiza o botão ativo no menu
+            buttons.forEach(btn => {
+                if (btn.getAttribute('onclick')?.includes(sectionId)) {
+                    btn.classList.add('active');
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- Funções Auxiliares: Tempo de Leitura e Formatação ---
+        function calculateReadTime(text) {
+            const wordsPerMinute = 150; // Média de palavras por minuto
+            const wordCount = text.trim().split(/\s+/).length;
+            const readingTime = Math.ceil(wordCount / wordsPerMinute);
+            return `${readingTime} min`;
+        }
+
+        function formatDate() {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+        // --- Renderização dos Cards de Histórias ---
+        function renderStories() {
+            const storiesGrid = document.getElementById('stories-grid');
+            const stories = getStories();
+
+            if (stories.length === 0) {
+                storiesGrid.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1;">Nenhuma história publicada ainda.</p>`;
+                return;
+            }
+
+            storiesGrid.innerHTML = stories.map(story => {
+                const readTime = calculateReadTime(story.content);
+                const coverHTML = story.cover 
+                    ? `<img src="${story.cover}" alt="${story.title}" class="card-cover" onerror="this.outerHTML='<div class=\'card-cover-placeholder\'>📖</div>'">` 
+                    : `<div class="card-cover-placeholder">📖</div>`;
+
+                return `
+                    <div class="story-card" onclick="openReadModal('${story.id}')">
+                        ${coverHTML}
+                        <div class="card-body">
+                            <span class="card-category">${escapeHTML(story.category)}</span>
+                            <h3>${escapeHTML(story.title)}</h3>
+                            <div class="card-meta">
+                                <span>⏳ ${readTime}</span>
+                                <span>📅 ${story.date}</span>
+                            </div>
+                            <div class="card-admin-btns" onclick="event.stopPropagation()">
+                                <button class="btn-sm btn-edit" onclick="editStory('${story.id}')">✏ Editar</button>
+                                <button class="btn-sm btn-delete" onclick="deleteStory('${story.id}')">🗑 Excluir</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Sanitiza textos para evitar XSS
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag] || tag)
+            );
+        }
+
+        // --- Sistema de Leitura (Modal) ---
+        function openReadModal(id) {
+            const stories = getStories();
+            const story = stories.find(s => s.id === id);
+
+            if (!story) return;
+
+            const modalBody = document.getElementById('read-modal-body');
+            const readTime = calculateReadTime(story.content);
+            const coverHTML = story.cover 
+                ? `<img src="${story.cover}" class="modal-read-cover" alt="${story.title}">` 
+                : '';
+
+            modalBody.innerHTML = `
+                <div class="modal-read-header">
+                    <span class="card-category">${escapeHTML(story.category)}</span>
+                    <h2 class="modal-read-title">${escapeHTML(story.title)}</h2>
+                    <div class="modal-read-meta">
+                        <span>⏱ Tempo de leitura: ${readTime}</span>
+                        <span>📅 Publicado em: ${story.date}</span>
+                    </div>
+                </div>
+                ${coverHTML}
+                <div class="modal-read-text">${escapeHTML(story.content)}</div>
+            `;
+
+            document.getElementById('read-modal').classList.add('active');
+        }
+
+        function closeReadModal() {
+            document.getElementById('read-modal').classList.remove('active');
+        }
+
+        // --- Painel de Criação/Edição (Modal) ---
+        function openStoryModal() {
+            document.getElementById('story-form').reset();
+            document.getElementById('story-id').value = '';
+            document.getElementById('form-modal-title').innerText = '➕ Publicar Nova História';
+            document.getElementById('form-submit-btn').innerText = 'Publicar';
+            document.getElementById('story-form-modal').classList.add('active');
+        }
+
+        function closeStoryModal() {
+            document.getElementById('story-form-modal').classList.remove('active');
+        }
+
+        // Submissão do Formulário (Criar ou Editar)
+        function handleStorySubmit(event) {
+            event.preventDefault();
+
+            const id = document.getElementById('story-id').value;
+            const title = document.getElementById('story-title').value;
+            const category = document.getElementById('story-category').value;
+            const cover = document.getElementById('story-cover').value;
+            const content = document.getElementById('story-content').value;
+
+            let stories = getStories();
+
+            if (id) {
+                // Modo Edição
+                stories = stories.map(s => {
+                    if (s.id === id) {
+                        return { ...s, title, category, cover, content };
+                    }
+                    return s;
+                });
+            } else {
+                // Modo Criação
+                const newStory = {
+                    id: Date.now().toString(),
+                    title,
+                    category,
+                    cover,
+                    content,
+                    date: formatDate()
+                };
+                stories.unshift(newStory);
+            }
+
+            saveStories(stories);
+            renderStories();
+            closeStoryModal();
+        }
+
+        // --- Modo Editar ---
+        function editStory(id) {
+            const stories = getStories();
+            const story = stories.find(s => s.id === id);
+
+            if (!story) return;
+
+            document.getElementById('story-id').value = story.id;
+            document.getElementById('story-title').value = story.title;
+            document.getElementById('story-category').value = story.category;
+            document.getElementById('story-cover').value = story.cover || '';
+            document.getElementById('story-content').value = story.content;
+
+            document.getElementById('form-modal-title').innerText = '✏ Editar História';
+            document.getElementById('form-submit-btn').innerText = 'Salvar Alterações';
+
+            document.getElementById('story-form-modal').classList.add('active');
+        }
+
+        // --- Modo Excluir ---
+        function deleteStory(id) {
+            const confirmDelete = confirm("Tem certeza de que deseja excluir esta história?");
+            if (confirmDelete) {
+                let stories = getStories();
+                stories = stories.filter(s => s.id !== id);
+                saveStories(stories);
+                renderStories();
+            }
+        }
+
+        // Fechar modais ao clicar fora da janela
+        window.onclick = function(event) {
+            const readModal = document.getElementById('read-modal');
+            const formModal = document.getElementById('story-form-modal');
+
+            if (event.target === readModal) {
+                closeReadModal();
+            }
+            if (event.target === formModal) {
+                closeStoryModal();
+            }
+        };
     </script>
 </body>
 </html>
