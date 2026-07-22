@@ -817,9 +817,16 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="story-cover">URL da Imagem de Capa (Opcional)</label>
+                    <label for="story-file">Enviar Foto de Capa (Do seu dispositivo)</label>
+                    <input type="file" id="story-file" accept="image/*" onchange="previewImage(event)">
+                </div>
+
+                <div class="form-group">
+                    <label for="story-cover">OU URL da Imagem (Opcional)</label>
                     <input type="url" id="story-cover" placeholder="https://exemplo.com/imagem.jpg">
                 </div>
+
+                <input type="hidden" id="story-cover-base64">
 
                 <div class="form-group">
                     <label for="story-content">Texto da História</label>
@@ -879,7 +886,19 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(stories));
         }
 
-        // --- Navegação entre Seções SPA (Single Page Application) ---
+        // --- Leitor e Pré-visualização da Foto Escolhida ---
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('story-cover-base64').value = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // --- Navegação entre Seções SPA ---
         function showSection(sectionId) {
             const sections = document.querySelectorAll('.content-section');
             const buttons = document.querySelectorAll('.nav-btn');
@@ -897,7 +916,6 @@
                 targetSection.classList.add('active');
             }
 
-            // Atualiza o botão ativo no menu
             buttons.forEach(btn => {
                 if (btn.getAttribute('onclick')?.includes(sectionId)) {
                     btn.classList.add('active');
@@ -909,7 +927,7 @@
 
         // --- Funções Auxiliares: Tempo de Leitura e Formatação ---
         function calculateReadTime(text) {
-            const wordsPerMinute = 150; // Média de palavras por minuto
+            const wordsPerMinute = 150;
             const wordCount = text.trim().split(/\s+/).length;
             const readingTime = Math.ceil(wordCount / wordsPerMinute);
             return `${readingTime} min`;
@@ -958,7 +976,7 @@
             }).join('');
         }
 
-        // Sanitiza textos para evitar XSS
+        // Sanitiza textos
         function escapeHTML(str) {
             return str.replace(/[&<>'"]/g, 
                 tag => ({
@@ -1004,10 +1022,11 @@
             document.getElementById('read-modal').classList.remove('active');
         }
 
-        // --- Painel de Criação/Edição (Modal) ---
+        // --- Painel de Criação/Edição ---
         function openStoryModal() {
             document.getElementById('story-form').reset();
             document.getElementById('story-id').value = '';
+            document.getElementById('story-cover-base64').value = '';
             document.getElementById('form-modal-title').innerText = '➕ Publicar Nova História';
             document.getElementById('form-submit-btn').innerText = 'Publicar';
             document.getElementById('story-form-modal').classList.add('active');
@@ -1017,15 +1036,18 @@
             document.getElementById('story-form-modal').classList.remove('active');
         }
 
-        // Submissão do Formulário (Criar ou Editar)
+        // Submissão do Formulário
         function handleStorySubmit(event) {
             event.preventDefault();
 
             const id = document.getElementById('story-id').value;
             const title = document.getElementById('story-title').value;
             const category = document.getElementById('story-category').value;
-            const cover = document.getElementById('story-cover').value;
+            const urlCover = document.getElementById('story-cover').value;
+            const fileCover = document.getElementById('story-cover-base64').value;
             const content = document.getElementById('story-content').value;
+
+            const cover = fileCover || urlCover;
 
             let stories = getStories();
 
@@ -1033,7 +1055,13 @@
                 // Modo Edição
                 stories = stories.map(s => {
                     if (s.id === id) {
-                        return { ...s, title, category, cover, content };
+                        return { 
+                            ...s, 
+                            title, 
+                            category, 
+                            cover: cover || s.cover, 
+                            content 
+                        };
                     }
                     return s;
                 });
@@ -1065,7 +1093,8 @@
             document.getElementById('story-id').value = story.id;
             document.getElementById('story-title').value = story.title;
             document.getElementById('story-category').value = story.category;
-            document.getElementById('story-cover').value = story.cover || '';
+            document.getElementById('story-cover').value = story.cover && !story.cover.startsWith('data:') ? story.cover : '';
+            document.getElementById('story-cover-base64').value = story.cover && story.cover.startsWith('data:') ? story.cover : '';
             document.getElementById('story-content').value = story.content;
 
             document.getElementById('form-modal-title').innerText = '✏ Editar História';
@@ -1085,7 +1114,7 @@
             }
         }
 
-        // Fechar modais ao clicar fora da janela
+        // Fechar modais ao clicar fora
         window.onclick = function(event) {
             const readModal = document.getElementById('read-modal');
             const formModal = document.getElementById('story-form-modal');
