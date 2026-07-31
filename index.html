@@ -400,44 +400,92 @@
             document.getElementById('visit-count').innerText = visits;
         }
 
-        /* LOGIN MUDADO CONFORME PEDIDO */
-        function openLoginModal() { document.getElementById('login-modal').classList.add('active'); }
-        function closeLoginModal() { document.getElementById('login-modal').classList.remove('active'); }
+        /* --- TELA DE LOGIN / PERFIL DEDICADA & PERMANÊNCIA --- */
+        function checkUserSession() {
+            const loggedUser = JSON.parse(localStorage.getItem(STORAGE_LOGGED) || sessionStorage.getItem(STORAGE_LOGGED));
+            const slot = document.getElementById('auth-nav-slot');
+            const loginCard = document.getElementById('login-container-card');
+
+            if (loggedUser) {
+                const avatarSrc = loggedUser.avatar || 'https://via.placeholder.com/40/e65c00/ffffff?text=🦊';
+                
+                // Botão superior na Nav
+                slot.innerHTML = `
+                    <div class="user-nav-badge" onclick="showSection('login')">
+                        <img src="${avatarSrc}" class="user-nav-avatar">
+                        <span>${escapeHTML(loggedUser.nick)}</span>
+                    </div>
+                `;
+
+                // Tela Principal do Perfil Conectado
+                loginCard.innerHTML = `
+                    <div style="text-align: center;">
+                        <img src="${avatarSrc}" style="width: 70px; height: 70px; border-radius: 6px; border: 2px solid var(--border-orange); margin-bottom: 0.6rem; object-fit: cover;">
+                        <h3 style="color: var(--text-gold-light); font-size: 1.2rem; font-family: var(--font-heading);">${escapeHTML(loggedUser.nick)}</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.2rem;">✨ Raposinha Oficial da Somar ✨</p>
+                        
+                        <div style="display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap;">
+                            <button class="btn-pixel btn-pixel-accent" onclick="showSection('blog')">💬 Ir para o Blog</button>
+                            <button class="btn-pixel" onclick="logoutUser()">🚪 Sair da Conta</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                slot.innerHTML = `<button class="btn-pixel" onclick="showSection('login')">Entrar</button>`;
+
+                // Tela Estilizada de Formulário de Cadastro/Login
+                loginCard.innerHTML = `
+                    <div style="text-align: center; margin-bottom: 1.2rem;">
+                        <span style="font-size: 2.2rem;">🦊</span>
+                        <h3 style="color: var(--text-gold-light); font-family: var(--font-heading); font-size: 1.1rem; margin-top: 0.3rem;">ENTRAR NA COMUNIDADE</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem;">Junte-se às raposinhas para postar no blog e interagir!</p>
+                    </div>
+
+                    <form onsubmit="handleAuthSubmit(event)">
+                        <div class="form-group">
+                            <label>Seu Nick / Nome</label>
+                            <input type="text" id="auth-nick" placeholder="Ex: Raposa_Leitora" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Foto de Perfil (Opcional)</label>
+                            <input type="file" accept="image/*" onchange="previewImage(event, 'auth-avatar-base64')">
+                        </div>
+                        <input type="hidden" id="auth-avatar-base64">
+
+                        <div class="form-group" style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 0.8rem 0;">
+                            <input type="checkbox" id="keep-logged" checked style="width: auto;">
+                            <label for="keep-logged" style="font-size: 0.85rem; color: var(--text-main); cursor: pointer;">Permanecer conectado nesta raposinha</label>
+                        </div>
+
+                        <button type="submit" class="btn-pixel btn-pixel-accent" style="width: 100%; padding: 0.6rem; font-size: 0.75rem; margin-top: 0.4rem;">🦊 ENTRAR E SE JUNTAR</button>
+                    </form>
+                `;
+            }
+        }
 
         function handleAuthSubmit(event) {
             event.preventDefault();
             const nick = document.getElementById('auth-nick').value.trim();
             const avatar = document.getElementById('auth-avatar-base64').value;
+            const keepLogged = document.getElementById('keep-logged').checked;
 
             const user = { nick, avatar };
-            localStorage.setItem(STORAGE_LOGGED, JSON.stringify(user));
+
+            // Salva no LocalStorage (permanente) ou SessionStorage (só até fechar a aba)
+            if (keepLogged) {
+                localStorage.setItem(STORAGE_LOGGED, JSON.stringify(user));
+            } else {
+                sessionStorage.setItem(STORAGE_LOGGED, JSON.stringify(user));
+            }
 
             alert("Agora você é uma das raposinhas da Somar! 🦊");
-
             checkUserSession();
-            closeLoginModal();
-        }
-
-        function checkUserSession() {
-            const loggedUser = JSON.parse(localStorage.getItem(STORAGE_LOGGED));
-            const slot = document.getElementById('auth-nav-slot');
-
-            if (loggedUser) {
-                const avatarSrc = loggedUser.avatar || 'https://via.placeholder.com/20/e65c00/ffffff?text=🦊';
-                slot.innerHTML = `
-                    <div class="user-nav-badge" onclick="logoutUser()">
-                        <img src="${avatarSrc}" class="user-nav-avatar">
-                        <span>${escapeHTML(loggedUser.nick)}</span>
-                    </div>
-                `;
-            } else {
-                slot.innerHTML = `<button class="btn-pixel" onclick="openLoginModal()">Entrar</button>`;
-            }
         }
 
         function logoutUser() {
-            if (confirm("Sair da conta?")) {
+            if (confirm("Deseja mesmo sair da sua conta?")) {
                 localStorage.removeItem(STORAGE_LOGGED);
+                sessionStorage.removeItem(STORAGE_LOGGED);
                 isAdmin = false;
                 document.body.classList.remove('is-admin');
                 checkUserSession();
@@ -446,10 +494,10 @@
 
         /* LÓGICA DO BLOG DA COMUNIDADE */
         function openBlogPostModal() {
-            const loggedUser = JSON.parse(localStorage.getItem(STORAGE_LOGGED));
+            const loggedUser = JSON.parse(localStorage.getItem(STORAGE_LOGGED) || sessionStorage.getItem(STORAGE_LOGGED));
             if (!loggedUser) {
-                alert("Faça login para postar no blog!");
-                openLoginModal();
+                alert("Entre na sua conta para postar no blog!");
+                showSection('login');
                 return;
             }
             document.getElementById('blog-modal').classList.add('active');
@@ -458,7 +506,7 @@
 
         function handleBlogSubmit(event) {
             event.preventDefault();
-            const loggedUser = JSON.parse(localStorage.getItem(STORAGE_LOGGED));
+            const loggedUser = JSON.parse(localStorage.getItem(STORAGE_LOGGED) || sessionStorage.getItem(STORAGE_LOGGED));
             const text = document.getElementById('blog-text').value;
             const sticker = document.getElementById('blog-sticker-select').value;
 
